@@ -197,9 +197,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
     }
     storageProfile: {
       imageReference: {
-        publisher: 'MicrosoftWindowsServer'
-        offer: 'WindowsServer'
-        sku: OSVersion
+        publisher: 'microsoftwindowsdesktop'
+        offer: 'windows-11'
+        sku: 'win11-23h2-avd'
         version: 'latest'
       }
       osDisk: {
@@ -231,6 +231,22 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
     }
     securityProfile: ((securityType == 'TrustedLaunch') ? securityProfileJson : null)
   }
+}
+
+resource vmExtension2 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' = {
+  parent: vm
+  name: 'AADLoginForWindows'
+  location: location
+  properties: {
+    publisher: 'Microsoft.Azure.ActiveDirectory'
+    type: 'AADLoginForWindows'
+    typeHandlerVersion: '2.0'
+    autoUpgradeMinorVersion: true
+    settings: {
+      mdmId: '0000000a-0000-0000-c000-000000000000'
+    }
+  }
+
 }
 
 resource vmExtension 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' = if ((securityType == 'TrustedLaunch') && ((securityProfileJson.uefiSettings.secureBootEnabled == true) && (securityProfileJson.uefiSettings.vTpmEnabled == true))) {
