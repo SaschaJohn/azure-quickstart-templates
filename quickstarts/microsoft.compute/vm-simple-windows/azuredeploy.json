@@ -131,6 +131,7 @@
     "subnetPrefix": "10.0.0.0/24",
     "virtualNetworkName": "MyVNET",
     "networkSecurityGroupName": "default-NSG",
+    "aadLoginExtensionName": "AADLoginForWindows",
     "securityProfileJson": {
       "uefiSettings": {
         "secureBootEnabled": true,
@@ -329,10 +330,10 @@
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "apiVersion": "2018-10-01",
-      "name": "[concat(parameters('virtualMachineName'),'/', variables('aadLoginExtensionName'))]",
+      "name": "[concat(parameters('vmName'),'/', variables('aadLoginExtensionName'))]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
       ],
       "properties": {
         "publisher": "Microsoft.Azure.ActiveDirectory",
